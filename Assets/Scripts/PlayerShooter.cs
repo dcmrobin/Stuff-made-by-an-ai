@@ -22,8 +22,15 @@ public class PlayerShooter : MonoBehaviour
 
     void Shoot()
     {
-        GameObject projectile = Instantiate(projectilePrefab, transform.position, transform.rotation);
+        // Get the position of the player's head
+        Transform head = transform.Find("Head");
+        Vector3 headPosition = head.position;
+
+        // Instantiate the projectile at the head position
+        GameObject projectile = Instantiate(projectilePrefab, headPosition, transform.rotation);
         Rigidbody rb = projectile.GetComponent<Rigidbody>();
+
+        // Set the velocity of the projectile
         rb.velocity = transform.forward * projectileSpeed;
     }
 }
