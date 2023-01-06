@@ -32,5 +32,13 @@ public class PlayerShooter : MonoBehaviour
 
         // Set the velocity of the projectile
         rb.velocity = transform.forward * projectileSpeed;
+
+        // Raycast to check if the projectile is passing through an object
+        RaycastHit hit;
+        if (Physics.Raycast(headPosition, transform.forward, out hit, projectileSpeed * Time.deltaTime))
+        {
+            // If the projectile is passing through an object, move it back to the point where it just touched the object
+            projectile.transform.position = hit.point;
+        }
     }
 }
