@@ -44,14 +44,42 @@ public class PlayerMovement : MonoBehaviour
             // check if the player can wall jump and has pressed the jump button
             if (canWallJump && Input.GetButtonDown("Jump") && wallJumpTimeout <= 0)
             {
-                // get input for the horizontal axis
-                float h = Input.GetAxis("Horizontal");
-
-                // check if the player is moving towards a wall
-                if (h != 0)
+                // check if the player is touching a wall
+                RaycastHit hit;
+                if (Physics.Raycast(transform.position, transform.forward, out hit, 1f))
                 {
                     // calculate the wall jump direction
-                    moveDirection = transform.right * h;
+                    moveDirection = (-transform.forward + transform.up).normalized;
+                    moveDirection = moveDirection.normalized * speed;
+                    moveDirection.y = jumpForce;
+
+                    // set the wall jump timeout
+                    wallJumpTimeout = 0.5f;
+                }
+                else if (Physics.Raycast(transform.position, -transform.forward, out hit, 1f))
+                {
+                    // calculate the wall jump direction
+                    moveDirection = (transform.forward + transform.up).normalized;
+                    moveDirection = moveDirection.normalized * speed;
+                    moveDirection.y = jumpForce;
+
+                    // set the wall jump timeout
+                    wallJumpTimeout = 0.5f;
+                }
+                else if (Physics.Raycast(transform.position, transform.right, out hit, 1f))
+                {
+                    // calculate the wall jump direction
+                    moveDirection = (-transform.right + transform.up).normalized;
+                    moveDirection = moveDirection.normalized * speed;
+                    moveDirection.y = jumpForce;
+
+                    // set the wall jump timeout
+                    wallJumpTimeout = 0.5f;
+                }
+                else if (Physics.Raycast(transform.position, -transform.right, out hit, 1f))
+                {
+                    // calculate the wall jump direction
+                    moveDirection = (transform.right + transform.up).normalized;
                     moveDirection = moveDirection.normalized * speed;
                     moveDirection.y = jumpForce;
 
