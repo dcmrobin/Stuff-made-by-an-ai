@@ -100,6 +100,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseSensitivity: 150
+  smoothing: 5
+  enableSmoothing: 0
   playerBody: {fileID: 2344984100930076235}
 --- !u!114 &103431362242698483
 MonoBehaviour:
@@ -235,6 +237,7 @@ MonoBehaviour:
   speed: 6
   jumpForce: 10
   gravity: 20
+  canWallJump: 1
 --- !u!1 &3540325942928852640
 GameObject:
   m_ObjectHideFlags: 0
