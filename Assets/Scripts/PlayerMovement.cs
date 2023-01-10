@@ -21,8 +21,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        // if the character controller is grounded
-        if (controller.isGrounded)
+        // Raycast downwards to check if the player is on the ground
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, -Vector3.up, out hit, 1.1f))
         {
             // get input for the horizontal and vertical axes
             float h = Input.GetAxis("Horizontal");
@@ -38,14 +39,13 @@ public class PlayerMovement : MonoBehaviour
                 moveDirection.y = jumpForce;
             }
         }
-        // if the character controller is not grounded
+        // if the player is not on the ground
         else
         {
             // check if the player can wall jump and has pressed the jump button
             if (canWallJump && Input.GetButtonDown("Jump") && wallJumpTimeout <= 0)
             {
                 // check if the player is touching a wall
-                RaycastHit hit;
                 if (Physics.Raycast(transform.position, transform.forward, out hit, 1f))
                 {
                     // calculate the wall jump direction
@@ -78,24 +78,23 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else if (Physics.Raycast(transform.position, -transform.right, out hit, 1f))
                 {
-                    // calculate the wall jump direction
-                    moveDirection = (transform.right + transform.up).normalized;
-                    moveDirection = moveDirection.normalized * speed;
-                    moveDirection.y = jumpForce;
-
-                    // set the wall jump timeout
-                    wallJumpTimeout = 0.5f;
-                }
+                // calculate the wall jump direction
+                moveDirection = (transform.right + transform.up).normalized;
+                moveDirection = moveDirection.normalized * speed;
+                moveDirection.y = jumpForce;
+                // set the wall jump timeout
+                wallJumpTimeout = 0.5f;
             }
-
-            // decrease the wall jump timeout
-            wallJumpTimeout -= Time.deltaTime;
         }
 
-        // apply gravity to the character controller
-        moveDirection.y -= gravity * Time.deltaTime;
-
-        // move the character controller
-        controller.Move(moveDirection * Time.deltaTime);
+        // decrease the wall jump timeout
+        wallJumpTimeout -= Time.deltaTime;
     }
+
+    // apply gravity to the character controller
+    moveDirection.y -= gravity * Time.deltaTime;
+
+    // move the character controller
+    controller.Move(moveDirection * Time.deltaTime);
+}
 }
