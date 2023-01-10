@@ -26,13 +26,13 @@ public class PlayerMovement : MonoBehaviour
         if (Physics.Raycast(transform.position, -Vector3.up, out hit, 1.1f))
         {
             // get input for the horizontal and vertical axes
-            float h = Input.GetAxis("Horizontal");
-            float v = Input.GetAxis("Vertical");
-
+            float h = Input.GetAxisRaw("Horizontal");
+            float v = Input.GetAxisRaw("Vertical");
+            // get the camera object
+            Camera mainCamera = Camera.main;
             // calculate the move direction
-            moveDirection = (transform.forward * v) + (transform.right * h);
+            moveDirection = (mainCamera.transform.forward * v) + (mainCamera.transform.right * h);
             moveDirection = moveDirection.normalized * speed;
-
             // check if the player wants to jump
             if (Input.GetButtonDown("Jump"))
             {
